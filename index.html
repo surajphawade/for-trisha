@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Trisha 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose: #e8476a;
+    --blush: #fce4ec;
+    --deep: #1a0a10;
+    --gold: #d4a04a;
+    --cream: #fff8f0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* STARFIELD */
+  #stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* FLOATING HEARTS */
+  .hearts-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .fheart {
+    position: absolute;
+    bottom: -60px;
+    font-size: 1.2rem;
+    animation: floatUp linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes floatUp {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 28px;
+    text-align: center;
+  }
+
+  /* ── HERO ── */
+  #hero { background: transparent; }
+
+  .badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 12vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 1s 0.6s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: rgba(255,248,240,0.55);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+  }
+
+  .scroll-hint {
+    margin-top: 60px;
+    opacity: 0;
+    animation: fadeUp 1s 1.5s forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,248,240,0.35);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--rose), transparent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  /* ── TRUTH SECTION ── */
+  #truth {
+    background: radial-gradient(ellipse at 50% 0%, rgba(232,71,106,0.15) 0%, transparent 70%);
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 20px;
+  }
+
+  .truth-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 7vw, 3rem);
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 28px;
+    color: #fff;
+  }
+
+  .truth-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(232,71,106,0.25);
+    border-radius: 20px;
+    padding: 28px 24px;
+    max-width: 420px;
+    width: 100%;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .truth-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(232,71,106,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .truth-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(232,71,106,0.5);
+  }
+
+  .truth-card .icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .truth-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .truth-card p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(255,248,240,0.7);
+  }
+
+  /* ── NOSE POEM SECTION ── */
+  #poem {
+    background: radial-gradient(ellipse at 50% 100%, rgba(212,160,74,0.1) 0%, transparent 70%);
+  }
+
+  .poem-wrapper {
+    max-width: 380px;
+    width: 100%;
+  }
+
+  .poem-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .poem-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    line-height: 2;
+    color: rgba(255,248,240,0.85);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .poem-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .poem-line em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .poem-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--rose);
+    margin: 28px auto;
+    opacity: 0.4;
+  }
+
+  /* ── NAME REVEAL ── */
+  #reveal {
+    background: transparent;
+  }
+
+  .name-circle {
+    width: min(280px, 80vw);
+    height: min(280px, 80vw);
+    border-radius: 50%;
+    border: 1px solid rgba(232,71,106,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 32px;
+    animation: spin 20s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .name-circle::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(212,160,74,0.2);
+  }
+
+  .name-inner {
+    animation: spinReverse 20s linear infinite;
+    text-align: center;
+  }
+
+  @keyframes spinReverse { to { transform: rotate(-360deg); } }
+
+  .name-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 10vw, 3.5rem);
+    font-weight: 300;
+    color: #fff;
+    display: block;
+  }
+
+  .name-heart {
+    font-size: 1.5rem;
+    display: block;
+    margin-top: 4px;
+    color: var(--rose);
+  }
+
+  .reveal-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,248,240,0.65);
+    max-width: 340px;
+    line-height: 1.7;
+  }
+
+  /* ── PROMISE SECTION ── */
+  #promise {
+    background: radial-gradient(ellipse at 50% 50%, rgba(232,71,106,0.12) 0%, transparent 70%);
+  }
+
+  .promise-card {
+    background: linear-gradient(135deg, rgba(232,71,106,0.1), rgba(212,160,74,0.05));
+    border: 1px solid rgba(232,71,106,0.3);
+    border-radius: 24px;
+    padding: 40px 28px;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+  }
+
+  .promise-card::after {
+    content: '✦';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--deep);
+    padding: 0 12px;
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+
+  .promise-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 7vw, 2.6rem);
+    font-weight: 300;
+    color: #fff;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .promise-text {
+    font-size: 0.9rem;
+    line-height: 1.9;
+    color: rgba(255,248,240,0.7);
+    margin-bottom: 28px;
+  }
+
+  .promise-text strong {
+    color: var(--rose);
+    font-weight: 400;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid var(--rose);
+    border-radius: 100px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    text-decoration: none;
+    background: transparent;
+  }
+
+  .cta-btn:hover {
+    background: var(--rose);
+    transform: scale(1.04);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(255,248,240,0.25);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* CONFETTI BURST */
+  #confetti-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    opacity: 0;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MOBILE NAV DOTS */
+  .nav-dots {
+    position: fixed;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,248,240,0.2);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .nav-dot.active {
+    background: var(--rose);
+    transform: scale(1.4);
+  }
+
+  /* MUSIC TOGGLE */
+  .music-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 200;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(232,71,106,0.2);
+    border: 1px solid rgba(232,71,106,0.4);
+    color: var(--cream);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+  }
+
+  .music-btn:hover { background: rgba(232,71,106,0.4); }
+</style>
+</head>
+<body>
+
+<!-- STARFIELD -->
+<canvas id="stars"></canvas>
+
+<!-- FLOATING HEARTS BG -->
+<div class="hearts-bg" id="heartsBg"></div>
+
+<!-- CONFETTI -->
+<div id="confetti-container"></div>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" aria-label="Page sections">
+  <div class="nav-dot active" onclick="scrollToSection(0)"></div>
+  <div class="nav-dot" onclick="scrollToSection(1)"></div>
+  <div class="nav-dot" onclick="scrollToSection(2)"></div>
+  <div class="nav-dot" onclick="scrollToSection(3)"></div>
+  <div class="nav-dot" onclick="scrollToSection(4)"></div>
+</nav>
+
+<!-- MUSIC BTN -->
+<button class="music-btn" id="musicBtn" title="Toggle music" aria-label="Toggle background music">♫</button>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <p class="badge">✦ a letter written with love ✦</p>
+  <h1 class="hero-title">
+    For my<br>
+    <em>Trisha</em>
+  </h1>
+  <p class="hero-sub">because you deserve to know the truth</p>
+  <div class="scroll-hint">
+    <span>scroll down</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════ TRUTH ══════════ -->
+<section id="truth">
+  <p class="section-label">✦ the real story ✦</p>
+  <h2 class="truth-title">I never made fun of you.<br>I was <em style="font-style:italic;color:var(--rose)">admiring</em> you.</h2>
+
+  <div class="truth-card">
+    <span class="icon">🌸</span>
+    <h3>What "Dhebrya Nakachi" really means</h3>
+    <p>Those words that came out of my mouth? They were my clumsy way of saying — <em>your nose is so uniquely, perfectly you.</em> I got tongue-tied because I find you beautiful. That's all it ever was.</p>
+  </div>
+
+  <div class="truth-card" style="margin-top:14px">
+    <span class="icon">💎</span>
+    <h3>Your nose is one of my favourite things</h3>
+    <p>The little curve when you laugh. The way it scrunches when something smells weird. The way it fits your face like it was designed by someone who really cared. I notice it because I love it.</p>
+  </div>
+</section>
+
+<!-- ══════════ POEM ══════════ -->
+<section id="poem">
+  <div class="poem-wrapper">
+    <p class="section-label">✦ a poem just for you ✦</p>
+    <h2 class="poem-title">"Ode to Trisha's Nose"</h2>
+
+    <p class="poem-line">There is a tiny star that sits<br>right in the centre of your face —</p>
+    <div class="poem-divider"></div>
+    <p class="poem-line">it rises when you laugh too hard,<br>it dips when you're in a quiet place.</p>
+    <div class="poem-divider"></div>
+    <p class="poem-line">They said I teased you — <em>never true</em> —<br>I was just stuck, mid-sentence, staring</p>
+    <div class="poem-divider"></div>
+    <p class="poem-line">at the most <em>perfectly cute</em> little thing<br>I have ever had the luck of caring for.</p>
+    <div class="poem-divider"></div>
+    <p class="poem-line" style="color:rgba(255,248,240,0.5);font-style:italic;font-size:0.95rem;">— written for you, only ever for you 🌸</p>
+  </div>
+</section>
+
+<!-- ══════════ NAME REVEAL ══════════ -->
+<section id="reveal">
+  <p class="section-label" style="margin-bottom:28px">✦ my world ✦</p>
+  <div class="name-circle">
+    <div class="name-inner">
+      <span class="name-big">Trisha</span>
+      <span class="name-heart">♡</span>
+    </div>
+  </div>
+  <p class="reveal-text">
+    Every time I say your name, my heart does something embarrassing.<br><br>
+    You are not just my girlfriend —<br>you are my <em style="color:var(--gold)">favourite person</em>.
+  </p>
+</section>
+
+<!-- ══════════ PROMISE ══════════ -->
+<section id="promise">
+  <div class="promise-card">
+    <h2 class="promise-title">I promise you,<br>Trisha 💕</h2>
+    <p class="promise-text">
+      I will never say anything to hurt you — not even accidentally, not even in a joke.
+      <strong>Your nose is cute.</strong> Your smile is everything.
+      And you, exactly as you are, are more than I ever deserved.<br><br>
+      Please forgive me for making you feel even one second of sadness.
+      I would rewind the universe to take it back.
+    </p>
+    <button class="cta-btn" onclick="launchConfetti()">I forgive you 💖</button>
+  </div>
+</section>
+
+<footer>made with love, just for you · always yours 🌸</footer>
+
+<script>
+// ── STARFIELD ──
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = Array.from({length: 120}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.4 + 0.3,
+    a: Math.random(),
+    speed: Math.random() * 0.005 + 0.002,
+    phase: Math.random() * Math.PI * 2
+  }));
+}
+
+function drawStars(t) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    const alpha = 0.2 + 0.5 * Math.abs(Math.sin(t * s.speed + s.phase));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+
+resizeCanvas();
+initStars();
+requestAnimationFrame(drawStars);
+window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
+
+// ── FLOATING HEARTS ──
+const heartsBg = document.getElementById('heartsBg');
+const heartEmojis = ['💕','🌸','✨','💗','🩷'];
+
+function spawnHeart() {
+  const el = document.createElement('div');
+  el.className = 'fheart';
+  el.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+  el.style.left = Math.random() * 100 + '%';
+  el.style.fontSize = (0.8 + Math.random() * 0.8) + 'rem';
+  const dur = 8 + Math.random() * 8;
+  el.style.animationDuration = dur + 's';
+  el.style.animationDelay = Math.random() * 3 + 's';
+  heartsBg.appendChild(el);
+  setTimeout(() => el.remove(), (dur + 3) * 1000);
+}
+
+setInterval(spawnHeart, 800);
+
+// ── POEM SCROLL REVEAL ──
+const poemLines = document.querySelectorAll('.poem-line');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.3 });
+
+poemLines.forEach((line, i) => {
+  line.style.transitionDelay = (i * 0.15) + 's';
+  observer.observe(line);
+});
+
+// ── NAV DOTS ──
+const sections = document.querySelectorAll('section');
+const dots = document.querySelectorAll('.nav-dot');
+
+function scrollToSection(i) {
+  sections[i].scrollIntoView({ behavior: 'smooth' });
+}
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = [...sections].indexOf(e.target);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.5 });
+
+sections.forEach(s => sectionObserver.observe(s));
+
+// ── CONFETTI ──
+const container = document.getElementById('confetti-container');
+const colors = ['#e8476a','#f48fb1','#fce4ec','#d4a04a','#fff8f0','#ff80ab'];
+
+function launchConfetti() {
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.cssText = `
+        left: ${40 + Math.random() * 20}%;
+        top: 60%;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        width: ${6 + Math.random() * 8}px;
+        height: ${6 + Math.random() * 8}px;
+        animation: none;
+      `;
+      container.appendChild(el);
+
+      const angle = (Math.random() * 360) * Math.PI / 180;
+      const velocity = 200 + Math.random() * 300;
+      const vx = Math.cos(angle) * velocity;
+      const vy = Math.sin(angle) * velocity - 200;
+
+      let startTime = null;
+      let x = parseFloat(el.style.left);
+      let y = parseFloat(el.style.top);
+
+      function animate(ts) {
+        if (!startTime) startTime = ts;
+        const t = (ts - startTime) / 1000;
+        const cx = x + (vx * t / window.innerWidth) * 100;
+        const cy = y + ((vy * t + 0.5 * 400 * t * t) / window.innerHeight) * 100;
+        el.style.left = cx + '%';
+        el.style.top = cy + '%';
+        el.style.opacity = Math.max(0, 1 - t / 2);
+        el.style.transform = `rotate(${t * 180}deg)`;
+        if (t < 2.5) requestAnimationFrame(animate);
+        else el.remove();
+      }
+
+      el.style.opacity = 1;
+      requestAnimationFrame(animate);
+    }, i * 15);
+  }
+
+  // Show love message
+  setTimeout(() => {
+    const msg = document.createElement('div');
+    msg.style.cssText = `
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(26,10,16,0.85); backdrop-filter: blur(4px);
+      animation: fadeUp 0.5s forwards;
+    `;
+    msg.innerHTML = `
+      <div style="text-align:center;padding:40px 28px;max-width:340px">
+        <div style="font-size:3rem;margin-bottom:16px">💖</div>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:#fff;margin-bottom:12px">Thank you, Trisha!</p>
+        <p style="font-size:0.9rem;color:rgba(255,248,240,0.65);line-height:1.8;margin-bottom:28px">You just made my whole world complete. I love you, and your perfect little nose, more than words can say. 🌸</p>
+        <button onclick="this.parentElement.parentElement.remove()" style="padding:12px 32px;border:1px solid #e8476a;border-radius:100px;background:transparent;color:#fff8f0;font-size:0.85rem;cursor:pointer;letter-spacing:0.1em">close ✦</button>
+      </div>
+    `;
+    document.body.appendChild(msg);
+  }, 1500);
+}
+
+// ── AMBIENT AUDIO (soft heartbeat) ──
+let audioCtx = null;
+let musicOn = false;
+const musicBtn = document.getElementById('musicBtn');
+
+function createHeartbeat() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function beat() {
+    if (!musicOn) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.value = 60;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.05);
+    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.25);
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.3);
+
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.connect(gain2); gain2.connect(audioCtx.destination);
+    osc2.frequency.value = 60;
+    osc2.type = 'sine';
+    gain2.gain.setValueAtTime(0, audioCtx.currentTime + 0.35);
+    gain2.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.4);
+    gain2.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.6);
+    osc2.start(audioCtx.currentTime + 0.35);
+    osc2.stop(audioCtx.currentTime + 0.65);
+
+    setTimeout(beat, 900);
+  }
+  beat();
+}
+
+musicBtn.addEventListener('click', () => {
+  musicOn = !musicOn;
+  musicBtn.textContent = musicOn ? '♪' : '♫';
+  if (musicOn) createHeartbeat();
+});
+</script>
+
+</body>
+</html>
