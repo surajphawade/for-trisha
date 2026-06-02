@@ -556,9 +556,15 @@
   <div class="music-info">
     <div class="music-title">Abhi Na Jao Chhod Kar</div>
     <div class="music-artist">Kunal Bojewar · Acoustic Cover</div>
+    <div style="display:flex;gap:6px;margin-top:6px;align-items:center;">
+      <div class="track-dot" style="width:6px;height:6px;border-radius:50%;background:var(--rose);transition:background 0.3s;cursor:pointer;" onclick="loadTrack(0)"></div>
+      <div class="track-dot" style="width:6px;height:6px;border-radius:50%;background:rgba(255,248,240,0.2);transition:background 0.3s;cursor:pointer;" onclick="loadTrack(1)"></div>
+    </div>
   </div>
   <div class="music-controls">
+    <button class="close-player" id="prevBtn" aria-label="Previous" style="font-size:0.85rem;">⏮</button>
     <button class="play-btn" id="playBtn" aria-label="Play/Pause">▶</button>
+    <button class="close-player" id="nextBtn" aria-label="Next" style="font-size:0.85rem;">⏭</button>
     <button class="close-player" id="closePlayer" aria-label="Close player">✕</button>
   </div>
 </div>
@@ -804,31 +810,55 @@ function launchConfetti() {
 }
 
 // ── YOUTUBE MUSIC PLAYER ──
+const playlist = [
+  { id: '6Wrzso8H9aA', title: 'Abhi Na Jao Chhod Kar', artist: 'Kunal Bojewar · Acoustic Cover' },
+  { id: 'LtwZEesZVWU', title: 'Bahut Khoobsurat Ho Aap', artist: 'Arijit Singh · Dil Jhoom · Gadar 2' }
+];
+let currentTrack = 0;
 let ytPlayer = null;
 let isPlaying = false;
+
 const playBtn = document.getElementById('playBtn');
 const vinyl = document.getElementById('vinyl');
 const musicPlayer = document.getElementById('musicPlayer');
 const closePlayer = document.getElementById('closePlayer');
+const musicTitle = document.querySelector('.music-title');
+const musicArtist = document.querySelector('.music-artist');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 
-// Load YouTube IFrame API
+function loadTrack(idx) {
+  currentTrack = idx;
+  const t = playlist[idx];
+  musicTitle.textContent = t.title;
+  musicArtist.textContent = t.artist;
+  if (ytPlayer && ytPlayer.loadVideoById) {
+    ytPlayer.loadVideoById(t.id);
+    isPlaying = true;
+  }
+  // update dots
+  document.querySelectorAll('.track-dot').forEach((d, i) => {
+    d.style.background = i === idx ? 'var(--rose)' : 'rgba(255,248,240,0.2)';
+  });
+}
+
 const ytScript = document.createElement('script');
 ytScript.src = 'https://www.youtube.com/iframe_api';
 document.head.appendChild(ytScript);
 
 window.onYouTubeIframeAPIReady = function() {
   ytPlayer = new YT.Player('yt-iframe', {
-    height: '1',
-    width: '1',
-    videoId: '6Wrzso8H9aA', // Kunal Bojewar acoustic cover
-    playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: '6Wrzso8H9aA' },
+    height: '1', width: '1',
+    videoId: playlist[0].id,
+    playerVars: { autoplay: 0, controls: 0 },
     events: {
-      onReady: () => {},
       onStateChange: (e) => {
         if (e.data === YT.PlayerState.PLAYING) {
           isPlaying = true;
           playBtn.textContent = '⏸';
           vinyl.classList.add('playing');
+        } else if (e.data === YT.PlayerState.ENDED) {
+          loadTrack((currentTrack + 1) % playlist.length);
         } else {
           isPlaying = false;
           playBtn.textContent = '▶';
@@ -841,12 +871,11 @@ window.onYouTubeIframeAPIReady = function() {
 
 playBtn.addEventListener('click', () => {
   if (!ytPlayer) return;
-  if (isPlaying) {
-    ytPlayer.pauseVideo();
-  } else {
-    ytPlayer.playVideo();
-  }
+  isPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
 });
+
+prevBtn.addEventListener('click', () => loadTrack((currentTrack - 1 + playlist.length) % playlist.length));
+nextBtn.addEventListener('click', () => loadTrack((currentTrack + 1) % playlist.length));
 
 closePlayer.addEventListener('click', () => {
   musicPlayer.classList.add('hidden');
