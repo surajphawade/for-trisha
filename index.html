@@ -434,27 +434,97 @@
     transform: scale(1.4);
   }
 
-  /* MUSIC TOGGLE */
-  .music-btn {
+  /* MUSIC PLAYER */
+  .music-player {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 200;
+    width: min(340px, 92vw);
+    background: rgba(26,10,16,0.92);
+    border: 1px solid rgba(232,71,106,0.35);
+    border-radius: 20px;
+    padding: 14px 16px;
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.4s, opacity 0.4s;
+  }
+
+  .music-player.hidden {
+    transform: translateX(-50%) translateY(100px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .music-vinyl {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: rgba(232,71,106,0.2);
-    border: 1px solid rgba(232,71,106,0.4);
+    background: radial-gradient(circle at 50%, #1a0a10 28%, #e8476a 30%, #c23055 55%, #1a0a10 57%, #3a1020 100%);
+    flex-shrink: 0;
+    animation: vinylSpin 3s linear infinite paused;
+    border: 1px solid rgba(232,71,106,0.3);
+  }
+
+  .music-vinyl.playing { animation-play-state: running; }
+
+  @keyframes vinylSpin { to { transform: rotate(360deg); } }
+
+  .music-info { flex: 1; min-width: 0; }
+
+  .music-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
     color: var(--cream);
-    font-size: 1.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .music-artist {
+    font-size: 0.72rem;
+    color: rgba(255,248,240,0.45);
+    margin-top: 2px;
+  }
+
+  .music-controls { display: flex; align-items: center; gap: 8px; }
+
+  .play-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--rose);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.3s;
+    transition: transform 0.2s, background 0.2s;
+    flex-shrink: 0;
   }
 
-  .music-btn:hover { background: rgba(232,71,106,0.4); }
+  .play-btn:hover { transform: scale(1.1); background: #c23055; }
+
+  .close-player {
+    background: none;
+    border: none;
+    color: rgba(255,248,240,0.3);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .close-player:hover { color: rgba(255,248,240,0.7); }
+
+  /* hidden youtube iframe */
+  #yt-iframe { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -477,8 +547,21 @@
   <div class="nav-dot" onclick="scrollToSection(4)"></div>
 </nav>
 
-<!-- MUSIC BTN -->
-<button class="music-btn" id="musicBtn" title="Toggle music" aria-label="Toggle background music">♫</button>
+<!-- YOUTUBE HIDDEN PLAYER -->
+<div id="yt-iframe" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"></div>
+
+<!-- MUSIC PLAYER BAR -->
+<div class="music-player" id="musicPlayer">
+  <div class="music-vinyl" id="vinyl"></div>
+  <div class="music-info">
+    <div class="music-title">Abhi Na Jao Chhod Kar</div>
+    <div class="music-artist">Kunal Bojewar · Acoustic Cover</div>
+  </div>
+  <div class="music-controls">
+    <button class="play-btn" id="playBtn" aria-label="Play/Pause">▶</button>
+    <button class="close-player" id="closePlayer" aria-label="Close player">✕</button>
+  </div>
+</div>
 
 <!-- ══════════ HERO ══════════ -->
 <section id="hero">
@@ -720,47 +803,54 @@ function launchConfetti() {
   }, 1500);
 }
 
-// ── AMBIENT AUDIO (soft heartbeat) ──
-let audioCtx = null;
-let musicOn = false;
-const musicBtn = document.getElementById('musicBtn');
+// ── YOUTUBE MUSIC PLAYER ──
+let ytPlayer = null;
+let isPlaying = false;
+const playBtn = document.getElementById('playBtn');
+const vinyl = document.getElementById('vinyl');
+const musicPlayer = document.getElementById('musicPlayer');
+const closePlayer = document.getElementById('closePlayer');
 
-function createHeartbeat() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// Load YouTube IFrame API
+const ytScript = document.createElement('script');
+ytScript.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytScript);
 
-  function beat() {
-    if (!musicOn) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.frequency.value = 60;
-    osc.type = 'sine';
-    gain.gain.setValueAtTime(0, audioCtx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.05);
-    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.25);
-    osc.start(audioCtx.currentTime);
-    osc.stop(audioCtx.currentTime + 0.3);
+window.onYouTubeIframeAPIReady = function() {
+  ytPlayer = new YT.Player('yt-iframe', {
+    height: '1',
+    width: '1',
+    videoId: '6Wrzso8H9aA', // Kunal Bojewar acoustic cover
+    playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: '6Wrzso8H9aA' },
+    events: {
+      onReady: () => {},
+      onStateChange: (e) => {
+        if (e.data === YT.PlayerState.PLAYING) {
+          isPlaying = true;
+          playBtn.textContent = '⏸';
+          vinyl.classList.add('playing');
+        } else {
+          isPlaying = false;
+          playBtn.textContent = '▶';
+          vinyl.classList.remove('playing');
+        }
+      }
+    }
+  });
+};
 
-    const osc2 = audioCtx.createOscillator();
-    const gain2 = audioCtx.createGain();
-    osc2.connect(gain2); gain2.connect(audioCtx.destination);
-    osc2.frequency.value = 60;
-    osc2.type = 'sine';
-    gain2.gain.setValueAtTime(0, audioCtx.currentTime + 0.35);
-    gain2.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.4);
-    gain2.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.6);
-    osc2.start(audioCtx.currentTime + 0.35);
-    osc2.stop(audioCtx.currentTime + 0.65);
-
-    setTimeout(beat, 900);
+playBtn.addEventListener('click', () => {
+  if (!ytPlayer) return;
+  if (isPlaying) {
+    ytPlayer.pauseVideo();
+  } else {
+    ytPlayer.playVideo();
   }
-  beat();
-}
+});
 
-musicBtn.addEventListener('click', () => {
-  musicOn = !musicOn;
-  musicBtn.textContent = musicOn ? '♪' : '♫';
-  if (musicOn) createHeartbeat();
+closePlayer.addEventListener('click', () => {
+  musicPlayer.classList.add('hidden');
+  if (ytPlayer && isPlaying) ytPlayer.pauseVideo();
 });
 </script>
 
